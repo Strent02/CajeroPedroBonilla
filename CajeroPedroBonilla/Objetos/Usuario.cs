@@ -8,9 +8,8 @@ namespace CajeroPedroBonilla.Objetos
 {
     internal class Usuario
     {
-        public void MostrarMensaje()
-        {
-            Console.WriteLine("Hola, soy un usuario del cajero automático.");
-        }
+        public string Nombre { get; set; }
+        public string Pin { get; set; }
+        public decimal Saldo { get; set; }
     }
 }
