@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Objetos\Acciones.cs" />
+    <Compile Include="Objetos\Movimientos.cs" />
     <Compile Include="Objetos\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,7 +39,8 @@ namespace CajeroPedroBonilla
                 Console.WriteLine("2. Retirar");
                 Console.WriteLine("3. Consultar saldo");
                 Console.WriteLine("4. Cambiar pin");
-                Console.WriteLine("5. Salir");
+                Console.WriteLine("5. Ver movimientos");
+                Console.WriteLine("6. Salir");
                 string opcion = Console.ReadLine();
                 switch (opcion)
                 {
@@ -56,6 +57,9 @@ namespace CajeroPedroBonilla
                         acciones.CambiarPin(usuario);
                         break;
                     case "5":
+                        acciones.VerMovimientos(usuario);
+                        break;
+                    case "6":
                         bandera = false;
                         break;
                     default:
@@ -68,11 +72,6 @@ namespace CajeroPedroBonilla
                     Console.ReadKey(true);
                 }
             }
-
-
-
-
-            Console.ReadKey(true);
         }
     }
 }
