@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.IO;
 
 namespace CajeroPedroBonilla
 {
@@ -11,19 +13,27 @@ namespace CajeroPedroBonilla
     {
         static void Main(string[] args)
         {
-            Usuario usuario = new Usuario();
+            string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
+            List<Usuario> usuarios = Usuario.CargarUsuariosDesdeArchivo(rutaArchivoUsuarios);
+            if (usuarios.Count == 0)
+            {
+                Console.WriteLine("No hay usuarios registrados. Verifique el archivo Usuarios.txt.");
+                return;
+            }
+            Usuario usuario = null;
             Acciones acciones = new Acciones();
             bool bandera = true;
-
+            // Login
             while (true)
             {
                 Console.WriteLine("Ingrese su nombre de usuario:");
-                usuario.Nombre = Console.ReadLine();
+                string nombreIngresado = Console.ReadLine();
                 Console.WriteLine("Ingrese su pin:");
-                usuario.Pin = Console.ReadLine();
-                if (usuario.Nombre == "Pedro" && usuario.Pin == "1234")
+                string pinIngresado = Console.ReadLine();
+                usuario = usuarios.Find(u => u.Nombre == nombreIngresado && u.Pin == pinIngresado);
+                if (usuario != null)
                 {
-                    break;
+                    break; // Login exitoso
                 }
                 else
                 {
