@@ -14,6 +14,7 @@ namespace CajeroPedroBonilla
         static void Main(string[] args)
         {
             string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
+
             List<Usuario> usuarios = Usuario.CargarUsuariosDesdeArchivo(rutaArchivoUsuarios);
             if (usuarios.Count == 0)
             {
@@ -23,7 +24,7 @@ namespace CajeroPedroBonilla
             Usuario usuario = null;
             Acciones acciones = new Acciones();
             bool bandera = true;
-            // Login
+
             while (true)
             {
                 Console.WriteLine("Ingrese su nombre de usuario:");
@@ -33,7 +34,7 @@ namespace CajeroPedroBonilla
                 usuario = usuarios.Find(u => u.Nombre == nombreIngresado && u.Pin == pinIngresado);
                 if (usuario != null)
                 {
-                    break; // Login exitoso
+                    break; 
                 }
                 else
                 {

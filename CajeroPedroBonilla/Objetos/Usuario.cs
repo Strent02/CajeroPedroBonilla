@@ -10,7 +10,7 @@ namespace CajeroPedroBonilla.Objetos
 {
     internal class Usuario
     {
-
+        string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
 
         public string Nombre { get; set; }
         public string Pin { get; set; }
@@ -25,7 +25,8 @@ namespace CajeroPedroBonilla.Objetos
         {
             Movimientos.Add(new Movimientos(tipo, monto, Saldo, exitoso));
         }
-        // Nuevo método para cargar usuarios desde archivo
+
+        //Metodo para cargar usuarios desde archivo
         public static List<Usuario> CargarUsuariosDesdeArchivo(string rutaArchivo)
         {
             var usuarios = new List<Usuario>();
