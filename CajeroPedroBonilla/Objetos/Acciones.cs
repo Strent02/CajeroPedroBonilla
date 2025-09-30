@@ -10,6 +10,7 @@ namespace CajeroPedroBonilla.Objetos
 {
     internal class Acciones
     {
+        string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
 
         public void Depositar(Usuario usuario)
         {
@@ -25,6 +26,9 @@ namespace CajeroPedroBonilla.Objetos
             usuario.RegistrarMovimientos("Depósito", cantidad, true);
             Console.WriteLine($"Ha depositado {cantidad}.");
             Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
+
+            ActualizarSaldoEnArchivo(usuario);
+
         }
         public void Retirar(Usuario usuario)
         {
@@ -46,8 +50,11 @@ namespace CajeroPedroBonilla.Objetos
                 usuario.RegistrarMovimientos("Retiro", cantidad, true);
                 Console.WriteLine($"Ha retirado {cantidad}.");
                 Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
-            }      
+
+                ActualizarSaldoEnArchivo(usuario);
+            }
         }
+
         public void ConsultarSaldo(Usuario usuario)
         {
             Console.WriteLine($"Su saldo es {usuario.Saldo}");
@@ -81,6 +88,32 @@ namespace CajeroPedroBonilla.Objetos
             {
                 Movimientos mov = usuario.Movimientos[i];
                 Console.WriteLine(mov);
+            }
+        }
+        private void ActualizarSaldoEnArchivo(Usuario usuario)
+        {
+            try
+            {
+                // Leer todas las líneas
+                var lineas = File.ReadAllLines(rutaArchivoUsuarios).ToList();
+                // Buscar la línea del usuario y actualizar saldo
+                for (int i = 0; i < lineas.Count; i++)
+                {
+                    var partes = lineas[i].Split('|');
+                    if (partes.Length == 3 && partes[0] == usuario.Nombre)
+                    {
+                        // Actualizar saldo con formato InvariantCulture para evitar problemas con coma/punto
+                        partes[2] = usuario.Saldo.ToString("F2", CultureInfo.InvariantCulture);
+                        lineas[i] = string.Join("|", partes);
+                        break;
+                    }
+                }
+                // Sobrescribir archivo con líneas actualizadas
+                File.WriteAllLines(rutaArchivoUsuarios, lineas);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error actualizando saldo en archivo: " + ex.Message);
             }
         }
     }
