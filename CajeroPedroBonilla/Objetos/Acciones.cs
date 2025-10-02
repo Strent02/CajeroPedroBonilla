@@ -72,6 +72,7 @@ namespace CajeroPedroBonilla.Objetos
             Console.WriteLine($"Su saldo es {usuario.Saldo}");
         }
 
+        //Metodo para cambiar contraseña
         public void CambiarContraseña(Usuario usuario)
         {
             string nuevaContrasena;

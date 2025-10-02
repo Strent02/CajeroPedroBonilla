@@ -15,13 +15,12 @@ namespace CajeroPedroBonilla.Objetos
         public decimal Saldo { get; set; }
         public List<Movimientos> Movimientos { get; private set; }
 
-        string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
-
         public Usuario()
         {
             Movimientos = new List<Movimientos>();
         }
 
+        //Metodo registrar movimientos
         public void RegistrarMovimientos(string tipo, decimal monto, bool exitoso)
         {
             Movimientos nuevo = new Movimientos(tipo, monto, Saldo, exitoso);
@@ -33,7 +32,7 @@ namespace CajeroPedroBonilla.Objetos
             }
         }
 
-        //Metodo para registrar movimientos
+        //Metodo para guardar movimiento en archivo
         public void GuardarMovimientoEnArchivo(Movimientos movimiento)
         {
             string ruta = $@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt";
@@ -94,6 +93,7 @@ namespace CajeroPedroBonilla.Objetos
             return usuarios;
         }
 
+        //Metodo para cargar movimientos desde archivo
         public void CargarMovimientosDesdeArchivo()
         {
             Movimientos.Clear();
