@@ -13,23 +13,23 @@ namespace CajeroPedroBonilla.Objetos
     {
         public DateTime Fecha { get; set; }
         public string Tipo { get; set; }
-        public decimal Monto { get; set; }
+        public decimal Cantidad { get; set; }
         public decimal SaldoRestante { get; set; }
-        bool ProcesoExitoso { get; set; }
+        public bool ProcesoExitoso { get; set; }
 
         public Movimientos() { }
-        public Movimientos( string tipo, decimal monto, decimal saldoRestante, bool procesoExitoso)
+        public Movimientos( string tipo, decimal cantidad, decimal saldoRestante, bool procesoExitoso)
         {
             Fecha = DateTime.Now;
             Tipo = tipo;
-            Monto = monto;
+            Cantidad = cantidad;
             SaldoRestante = saldoRestante;
             ProcesoExitoso = procesoExitoso;
         }
         public override string ToString()
         {
             string status = ProcesoExitoso ? "Éxito" : "Fallido";
-            return $"{Tipo}: {Monto} (Nuevo saldo: {SaldoRestante}) - {status} - {Fecha:dd/MM/yyyy HH:mm}.";
+            return $"{Tipo}: {Cantidad} (Nuevo saldo: {SaldoRestante}) - {status} - {Fecha:dd/MM/yyyy HH:mm}.";
         }
     }
 }
