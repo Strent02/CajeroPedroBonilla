@@ -29,16 +29,16 @@ namespace CajeroPedroBonilla
             {
                 Console.WriteLine("Ingrese su nombre de usuario:");
                 string nombreIngresado = Console.ReadLine();
-                Console.WriteLine("Ingrese su pin:");
-                string pinIngresado = Console.ReadLine();
-                usuario = usuarios.Find(u => u.Nombre == nombreIngresado && u.Pin == pinIngresado);
+                Console.WriteLine("Ingrese su Contraseña:");
+                string ContraseñaIngresada = Console.ReadLine();
+                usuario = usuarios.Find(u => u.Nombre == nombreIngresado && u.Contraseña == ContraseñaIngresada);
                 if (usuario != null)
                 {
                     break; 
                 }
                 else
                 {
-                    Console.WriteLine("Usuario o pin incorrecto, intente de nuevo.");
+                    Console.WriteLine("Usuario o Contraseña incorrecta, intente de nuevo.");
                 }
             }
             while (bandera)
@@ -49,7 +49,7 @@ namespace CajeroPedroBonilla
                 Console.WriteLine("1. Depositar");
                 Console.WriteLine("2. Retirar");
                 Console.WriteLine("3. Consultar saldo");
-                Console.WriteLine("4. Cambiar pin");
+                Console.WriteLine("4. Cambiar Contraseña");
                 Console.WriteLine("5. Ver movimientos");
                 Console.WriteLine("6. Salir");
                 string opcion = Console.ReadLine();
@@ -65,7 +65,7 @@ namespace CajeroPedroBonilla
                         acciones.ConsultarSaldo(usuario);
                         break;
                     case "4":
-                        acciones.CambiarPin(usuario);
+                        acciones.CambiarContraseña(usuario);
                         break;
                     case "5":
                         acciones.VerMovimientos(usuario);

@@ -10,7 +10,7 @@ namespace CajeroPedroBonilla.Objetos
 {
     internal class Acciones
     {
-        string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
+        public string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
 
         public void Depositar(Usuario usuario)
         {
@@ -23,11 +23,15 @@ namespace CajeroPedroBonilla.Objetos
                 return;
             }
             usuario.Saldo += cantidad;
+
             usuario.RegistrarMovimientos("Depósito", cantidad, true);
+            usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
+
             Console.WriteLine($"Ha depositado {cantidad}.");
             Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
 
             ActualizarSaldoEnArchivo(usuario);
+
 
         }
         public void Retirar(Usuario usuario)
@@ -36,18 +40,24 @@ namespace CajeroPedroBonilla.Objetos
             if (!decimal.TryParse(Console.ReadLine(), out decimal cantidad) || cantidad <= 0)
             {
                 Console.WriteLine("Cantidad inválida. Operación cancelada.");
-                usuario.RegistrarMovimientos("Retiro", 0, false);
+
+                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
+
                 return;
             }
             if (cantidad > usuario.Saldo)
             {
                 Console.WriteLine("Saldo insuficiente.");
-                usuario.RegistrarMovimientos("Retiro", cantidad, false);
+                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
             }
             else
             {
                 usuario.Saldo -= cantidad;
-                usuario.RegistrarMovimientos("Retiro", cantidad, true);
+                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
+
                 Console.WriteLine($"Ha retirado {cantidad}.");
                 Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
 
@@ -59,13 +69,37 @@ namespace CajeroPedroBonilla.Objetos
         {
             Console.WriteLine($"Su saldo es {usuario.Saldo}");
         }
-        public void CambiarPin(Usuario usuario)
+
+        public void CambiarContraseña(Usuario usuario)
         {
-            Console.WriteLine("Ingrese su nuevo pin");
-            string nuevoPin = Console.ReadLine();
-            usuario.Pin = nuevoPin;
-            Console.WriteLine("Pin cambiado con exito");
+            string nuevaContrasena;
+            do
+            {
+                Console.WriteLine("Ingrese su nueva contraseña:");
+                nuevaContrasena = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(nuevaContrasena))
+                {
+                    Console.WriteLine("La contraseña no puede estar vacía. Intente de nuevo.");
+                }
+            } while (string.IsNullOrWhiteSpace(nuevaContrasena));
+
+            usuario.Contraseña = nuevaContrasena;
+
+            var lineas = File.ReadAllLines(rutaArchivoUsuarios).ToList();
+            for (int i = 0; i < lineas.Count; i++)
+            {
+                var partes = lineas[i].Split('|');
+                if (partes.Length == 3 && partes[0] == usuario.Nombre)
+                {
+                    lineas[i] = $"{partes[0]}|{nuevaContrasena}|{partes[2]}";
+                    break;
+                }
+            }
+            File.WriteAllLines(rutaArchivoUsuarios, lineas);
+
+            Console.WriteLine("Contraseña cambiada con éxito.");
         }
+
 
         public void VerMovimientos(Usuario usuario)
         {
@@ -94,21 +128,17 @@ namespace CajeroPedroBonilla.Objetos
         {
             try
             {
-                // Leer todas las líneas
                 var lineas = File.ReadAllLines(rutaArchivoUsuarios).ToList();
-                // Buscar la línea del usuario y actualizar saldo
                 for (int i = 0; i < lineas.Count; i++)
                 {
                     var partes = lineas[i].Split('|');
                     if (partes.Length == 3 && partes[0] == usuario.Nombre)
                     {
-                        // Actualizar saldo con formato InvariantCulture para evitar problemas con coma/punto
-                        partes[2] = usuario.Saldo.ToString("F2", CultureInfo.InvariantCulture);
+                        partes[2] = usuario.Saldo.ToString("F2");
                         lineas[i] = string.Join("|", partes);
                         break;
                     }
                 }
-                // Sobrescribir archivo con líneas actualizadas
                 File.WriteAllLines(rutaArchivoUsuarios, lineas);
             }
             catch (Exception ex)
