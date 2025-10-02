@@ -34,6 +34,7 @@ namespace CajeroPedroBonilla
                 usuario = usuarios.Find(u => u.Nombre == nombreIngresado && u.Contraseña == ContraseñaIngresada);
                 if (usuario != null)
                 {
+                    usuario.CargarMovimientosDesdeArchivo();
                     break; 
                 }
                 else

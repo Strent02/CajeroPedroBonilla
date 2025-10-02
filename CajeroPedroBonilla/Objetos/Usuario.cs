@@ -15,19 +15,24 @@ namespace CajeroPedroBonilla.Objetos
         public decimal Saldo { get; set; }
         public List<Movimientos> Movimientos { get; private set; }
 
-        string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
-
         public Usuario()
         {
             Movimientos = new List<Movimientos>();
         }
 
+        //Metodo registrar movimientos
         public void RegistrarMovimientos(string tipo, decimal monto, bool exitoso)
         {
-            Movimientos.Add(new Movimientos(tipo, monto, Saldo, exitoso));
+            Movimientos nuevo = new Movimientos(tipo, monto, Saldo, exitoso);
+            Movimientos.Add(nuevo);
+
+            using (StreamWriter sw = new StreamWriter($@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt", true))
+            {
+                sw.WriteLine($"{tipo}|{monto}|{Saldo}|{(exitoso ? "Éxito" : "Fallido")}|{nuevo.Fecha:yyyy-MM-dd HH:mm}");
+            }
         }
 
-        //Metodo para registrar movimientos
+        //Metodo para guardar movimiento en archivo
         public void GuardarMovimientoEnArchivo(Movimientos movimiento)
         {
             string ruta = $@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt";
@@ -41,7 +46,7 @@ namespace CajeroPedroBonilla.Objetos
 
             using (StreamWriter sw = new StreamWriter(ruta, true))
             {
-                sw.WriteLine($"{movimiento.Fecha:yyyy-MM-dd HH:mm}|{movimiento.Tipo}|{movimiento.Cantidad}|{movimiento.SaldoRestante}|{(movimiento.ProcesoExitoso ? "Éxito" : "Fallido")}");
+                sw.WriteLine($"{movimiento.Tipo}|{movimiento.Cantidad}|{movimiento.SaldoRestante}|{(movimiento.ProcesoExitoso ? "Éxito" : "Fallido")}|{movimiento.Fecha:yyyy-MM-dd HH:mm}");
             }
         }
 
@@ -88,10 +93,11 @@ namespace CajeroPedroBonilla.Objetos
             return usuarios;
         }
 
+        //Metodo para cargar movimientos desde archivo
         public void CargarMovimientosDesdeArchivo()
         {
-            string ruta = $@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt";
             Movimientos.Clear();
+            string ruta = $@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt";
 
             if (!File.Exists(ruta))
             {
@@ -108,13 +114,13 @@ namespace CajeroPedroBonilla.Objetos
                     if (partes.Length != 5) continue;
 
                     Movimientos.Add(new Movimientos(
-                        partes[1],
+                        partes[0],
+                        decimal.Parse(partes[1]),
                         decimal.Parse(partes[2]),
-                        decimal.Parse(partes[3]),
-                        partes[4] == "Éxito"
+                        partes[3] == "Éxito"
                     )
                     {
-                        Fecha = DateTime.Parse(partes[0])
+                        Fecha = DateTime.Parse(partes[4])
                     });
                 }
             }

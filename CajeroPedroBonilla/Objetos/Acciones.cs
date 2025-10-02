@@ -12,6 +12,7 @@ namespace CajeroPedroBonilla.Objetos
     {
         public string rutaArchivoUsuarios = @"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Usuarios.txt";
 
+        //Metodo para depositar
         public void Depositar(Usuario usuario)
         {
 
@@ -31,9 +32,9 @@ namespace CajeroPedroBonilla.Objetos
             Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
 
             ActualizarSaldoEnArchivo(usuario);
-
-
         }
+
+        //Metodo para retirar
         public void Retirar(Usuario usuario)
         {
             Console.WriteLine("Ingrese cantidad a retirar:");
@@ -65,11 +66,13 @@ namespace CajeroPedroBonilla.Objetos
             }
         }
 
+        //Metodo para consultar saldo
         public void ConsultarSaldo(Usuario usuario)
         {
             Console.WriteLine($"Su saldo es {usuario.Saldo}");
         }
 
+        //Metodo para cambiar contraseña
         public void CambiarContraseña(Usuario usuario)
         {
             string nuevaContrasena;
@@ -100,7 +103,7 @@ namespace CajeroPedroBonilla.Objetos
             Console.WriteLine("Contraseña cambiada con éxito.");
         }
 
-
+        //Metodo para ver movimientos
         public void VerMovimientos(Usuario usuario)
         {
             Console.WriteLine("=== Últimos 5 Movimientos ===");
@@ -124,17 +127,20 @@ namespace CajeroPedroBonilla.Objetos
                 Console.WriteLine(mov);
             }
         }
+
+        //Metodo para actualizar saldo en archivo
         private void ActualizarSaldoEnArchivo(Usuario usuario)
         {
             try
             {
+                //Leer todas las líneas del archivo y pasarlas a una lista
                 var lineas = File.ReadAllLines(rutaArchivoUsuarios).ToList();
                 for (int i = 0; i < lineas.Count; i++)
                 {
                     var partes = lineas[i].Split('|');
                     if (partes.Length == 3 && partes[0] == usuario.Nombre)
                     {
-                        partes[2] = usuario.Saldo.ToString("F2");
+                        partes[2] = usuario.Saldo.ToString();
                         lineas[i] = string.Join("|", partes);
                         break;
                     }
