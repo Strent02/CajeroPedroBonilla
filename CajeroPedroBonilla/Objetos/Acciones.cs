@@ -26,7 +26,6 @@ namespace CajeroPedroBonilla.Objetos
             usuario.Saldo += cantidad;
 
             usuario.RegistrarMovimientos("Depósito", cantidad, true);
-            usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
 
             Console.WriteLine($"Ha depositado {cantidad}.");
             Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
@@ -43,7 +42,6 @@ namespace CajeroPedroBonilla.Objetos
                 Console.WriteLine("Cantidad inválida. Operación cancelada.");
 
                 usuario.RegistrarMovimientos("Depósito", cantidad, true);
-                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
 
                 return;
             }
@@ -51,13 +49,11 @@ namespace CajeroPedroBonilla.Objetos
             {
                 Console.WriteLine("Saldo insuficiente.");
                 usuario.RegistrarMovimientos("Depósito", cantidad, true);
-                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
             }
             else
             {
                 usuario.Saldo -= cantidad;
                 usuario.RegistrarMovimientos("Depósito", cantidad, true);
-                usuario.GuardarMovimientoEnArchivo(usuario.Movimientos.Last());
 
                 Console.WriteLine($"Ha retirado {cantidad}.");
                 Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
