@@ -32,24 +32,6 @@ namespace CajeroPedroBonilla.Objetos
             }
         }
 
-        //Metodo para guardar movimiento en archivo
-        public void GuardarMovimientoEnArchivo(Movimientos movimiento)
-        {
-            string ruta = $@"C:\Users\DickRider\source\repos\CajeroPedroBonilla\CajeroPedroBonilla\Objetos\Logs\Log{Nombre}.txt";
-
-            // Crear carpeta "Logs" si no existe
-            string carpeta = Path.GetDirectoryName(ruta);
-            if (!Directory.Exists(carpeta))
-            {
-                Directory.CreateDirectory(carpeta);
-            }
-
-            using (StreamWriter sw = new StreamWriter(ruta, true))
-            {
-                sw.WriteLine($"{movimiento.Tipo}|{movimiento.Cantidad}|{movimiento.SaldoRestante}|{(movimiento.ProcesoExitoso ? "Éxito" : "Fallido")}|{movimiento.Fecha:yyyy-MM-dd HH:mm}");
-            }
-        }
-
         //Metodo para cargar usuarios desde archivo
         public static List<Usuario> CargarUsuariosDesdeArchivo(string rutaArchivo)
         {
