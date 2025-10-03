@@ -41,19 +41,19 @@ namespace CajeroPedroBonilla.Objetos
             {
                 Console.WriteLine("Cantidad inválida. Operación cancelada.");
 
-                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.RegistrarMovimientos("Retiro", cantidad, true);
 
                 return;
             }
             if (cantidad > usuario.Saldo)
             {
                 Console.WriteLine("Saldo insuficiente.");
-                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.RegistrarMovimientos("Retiro", cantidad, true);
             }
             else
             {
                 usuario.Saldo -= cantidad;
-                usuario.RegistrarMovimientos("Depósito", cantidad, true);
+                usuario.RegistrarMovimientos("Retiro", cantidad, true);
 
                 Console.WriteLine($"Ha retirado {cantidad}.");
                 Console.WriteLine($"Su nuevo saldo es {usuario.Saldo}.");
